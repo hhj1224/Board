@@ -21,6 +21,7 @@ $(function(){
         if(dateString){
           var date = new Date(dateString);
           $(element).html(getDate(date));
+          console.log(date);
         }
       });
     }
