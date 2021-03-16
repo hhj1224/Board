@@ -23,7 +23,7 @@ router.get('/login', function(req, res){
 });
 
 //Post Login
-router.post('/login',
+router.post('/login', 
     function(req, res, next){
         var errors = {};
         var isValid = true;
@@ -44,11 +44,11 @@ router.post('/login',
             res.redirect('/login');
         }
     },
-    passport.authenticate('local-login',{
-        successRedirect : '/posts',
-        failureRedirect:  '/login'
+    passport.authenticate('local-login', {
+      successRedirect : '/posts',
+      failureRedirect : '/login'
     }
-));
+  ));
 
 //Logout
 router.get('/logout', function(req, res){

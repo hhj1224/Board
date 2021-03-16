@@ -32,11 +32,6 @@ app.use(methodOverride('_method'));
 app.use(flash());
 app.use(session({secret:'MySecret', resave:true, saveUninitialized:true}));
 
-//Routes
-app.use('/', require('./routes/home'));
-app.use('/posts', require('./routes/posts'));
-app.use('/users', require('./routes/users'));
-
 //Passport
 app.use(passport.initialize());
 app.use(passport.session());
@@ -47,6 +42,11 @@ app.use(function(req,res,next){
     res.locals.currentUser = req.user;
     next();
 });
+
+//Routes
+app.use('/', require('./routes/home'));
+app.use('/posts', require('./routes/posts'));
+app.use('/users', require('./routes/users'));
 
 //Port setting
 var port = 3001;
