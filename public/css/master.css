@@ -13,3 +13,11 @@ body {font-family: 'Open Sans', sans-serif;}
 .nav{width: calc(100% - 140px);justify-content: space-between;}
 .nav .navbar-nav{flex-direction: initial;}
 .nav .navbar-nav li{display: inline-block;margin:0 10px}
+
+.board-table {table-layout: fixed;}
+.board-table .author,  .board-table .date {width: 100px;}
+.post-index-tool {max-width: 450px;}
+.post-index-tool input[type='text']{max-width: 130px;margin: 0 5px;border: 1px solid #ced4da;}
+
+.card .row{justify-content: space-between;}
+.highlighted {background-color: yellow;}

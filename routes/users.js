@@ -3,16 +3,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/User');
-
-//Index
-router.get('/', function(req, res){
-    User.find({})
-    .sort({username:1})
-    .exec(function(err, users){
-        if(err) return res.json(err);
-        res.render('users/index', {users:users});
-    });
-});
+var util = require('../util');
 
 //New
 router.get('/new', function(req, res){
@@ -26,7 +17,7 @@ router.post('/', function(req, res){
     User.create(req.body, function(err, user){
         if(err) {
             req.flash('user', req.body);
-            req.flash('errors', parseError(err));
+            req.flash('errors', util.parseError(err));
             return res.redirect('/users/new');
         }
         res.redirect('/users');
@@ -34,7 +25,7 @@ router.post('/', function(req, res){
 });
 
 //Show
-router.get('/:username', function(req, res){
+router.get('/:username', util.isLoggedin, checkPermission, function(req, res){
     User.findOne({username:req.params.username}, function(err, user){
         if(err) return res.json(err);
         res.render('users/show', {user:user});
@@ -42,7 +33,7 @@ router.get('/:username', function(req, res){
 });
 
 //Edit
-router.get('/:username/edit', function(req, res){
+router.get('/:username/edit', util.isLoggedin, checkPermission, function(req, res){
     var user = req.flash('user')[0];
     var errors = req.flash('errors')[0] || {};
     if(!user){
@@ -57,7 +48,7 @@ router.get('/:username/edit', function(req, res){
 });
 
 //Update
-router.put('/:username', function(req, res, next){
+router.put('/:username', util.isLoggedin, checkPermission, function(req, res, next){
     User.findOne({username:req.params.username})
     .select('password')
     .exec(function(err, user){
@@ -74,19 +65,11 @@ router.put('/:username', function(req, res, next){
         user.save(function(err, user){
             if(err) {
                 req.flash('user', req.body);
-                req.flash('errors', parseError(err));
+                req.flash('errors', util.parseError(err));
                 return res.redirect('/users/'+req.params.username+'/edit');
             }
             res.redirect('/users/'+user.username);
         });
-    });
-});
-
-//Destroy
-router.delete('/:username', function(req, res){
-    User.deleteOne({username:req.params.username}, function(err, user){
-        if(err) return res.json(err);
-        res.redirect('/users');
     });
 });
 
@@ -106,4 +89,14 @@ function parseError(errors){
         parsed.unhandled = JSON.stringify(errors);
     }
     return parsed;
+}
+
+//private functions
+function checkPermission(req, res, next){
+  Post.findOne({_id:req.params.id}, function(err, post){
+    if(err) return res.json(err);
+    if(post.author != req.user.id) return util.noPermission(req, res);
+
+    next();
+  });
 }
