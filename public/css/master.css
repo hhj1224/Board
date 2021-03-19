@@ -21,3 +21,20 @@ body {font-family: 'Open Sans', sans-serif;}
 
 .card .row{justify-content: space-between;}
 .highlighted {background-color: yellow;}
+
+.comment_list{display: flex;padding: 20px 0;border-top: 1px solid #dee2e6;}
+.comment_list .comment_name{width: 10%;}
+.comment_list .comment-edit-enabled{width: 90%;}
+
+.comment_input{display: flex;}
+.comment_input textarea{resize: none;}
+.comment_input button{margin-left:15px}
+
+.comment-edit,
+.comment-edit-enabled .comment-show {
+  display:none;
+}
+
+.comment-edit-enabled .comment-edit {
+  display:inherit;
+}
