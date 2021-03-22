@@ -5,6 +5,7 @@
     comment
     commentForm
     commentError
+    parentComment
 */%>
 
 <form action="<%= actionUrl %><%= getPostQueryString(true) %>" method="post">
@@ -14,12 +15,15 @@
         <% } %>
         <div class="row">
             <div class="col-8">
-                <textarea name="text" row="2" class="form-control <%= (commentError._id == commentError.errors.text)?'is-invalid':'' %>"><%= (commentForm._id == comment._id)?commentForm.form.text:comment.text %></textarea>
+                <textarea name="text" row="2" class="form-control <%= (commentError._id == comment._id && commentError.parentComment == parentComment && commentError.errors.text)?'is-invalid':'' %>"><%= (commentForm._id == comment._id)?commentForm.form.text:comment.text %></textarea>
             </div>
             <div class="col-4">
                 <% if(comment._id){ %>
                     <button type="submit" class="btn btn-primary h-100 mr-2 pl-4 pr-4">Edit</button>
                     <a href="javascript:void(0);" onclick="$('#comment-<%= comment._id %>').removeClass('comment-edit-enabled');">Cancle</a>
+                <% }else if(parentComment){ %>
+                    <button type="submit" class="btn btn-primary h-100 mr-2 pl-4 pr-4">Add reply</button>
+                    <a href="javascript:void(0);" onclick="$('#comment-<%= parentComment %>').removeClass('comment-reply-enabled');">Cancle</a>
                 <% }else{ %>
                     <button type="submit" class="btn btn-primary h-100 mr-2 pl-4 pr-4">Add Comment</button>
                 <% } %>

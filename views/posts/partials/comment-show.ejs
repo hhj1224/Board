@@ -36,35 +36,37 @@
             <% } %>
         </div>
         <div class="comment-edit">
-            <%- include('./partials/comment-form', {
+            <%- include('comment-form', {
                 actionUrl: '/comments/' + comment._id + '?postId=' + post._id + '&_method=put',
                 comment: comment,
                 commentForm: commentForm,
-                commentError: commentError
+                commentError: commentError,
+                parentComment: null
             }); %>
         </div>
         <div class="comment-reply">
-            <%- include('./partials/comment-form', {
+            <%- include('comment-form', {
                 actionUrl: '/comments/?postId=' + post._id,
                 comment: {},
                 commentForm: commentForm,
                 commentError: commentError,
+                parentComment: comment._id,
                 parentComment: comment._id
             }); %>
         </div>
     </div>
     <% } %>
 
-    <div class="ml-3">
-        <% if(comment.childComments){ %>
-            <% comment.childComments.forEach(function(childComments){ %>
-                <%- include('./partials/comment-show', {
-                    post:post,
-                    comment: childComment,
-                    commentForm: commentForm,
-                    commentError: commentError
-                }); %>
-            <% }) %>
-        <% } %>
-    </div>
+</div>
+<div class="ml-3">
+    <% if(comment.childComments){ %>
+        <% comment.childComments.forEach(function(childComments){ %>
+            <%- include('comment-show', {
+                post:post,
+                comment: childComments,
+                commentForm: commentForm,
+                commentError: commentError
+            }); %>
+        <% }) %>
+    <% } %>
 </div>

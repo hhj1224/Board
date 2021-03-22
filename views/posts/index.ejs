@@ -13,7 +13,9 @@
             <table class="board-table table table-sm border-bottom">
                 <thead class="thead-light">
                     <tr>
+                        <th scope="col" class="numId">#</th>
                         <th scope="col">Title</th>
+                        <th scope="col" class="views">Views</th>
                         <th scope="col" class="author">Author</th>
                         <th scope="col" class="date">Date</th>
                     </tr>
@@ -27,11 +29,21 @@
                     <% } %>
                     <% posts.forEach(function(post){ %>
                     <tr>
+                        <td class="numId"><%= post.numId %></td>
                         <td>
-                            <a href="/posts/<%= post._id %><%= getPostQueryString() %>">
-                                <div data-search-highlight="title" class="ellipsis"><%= post.title %></div>
+                            <a href="/posts/<%= post._id %><%= getPostQueryString() %>" class="title-container">
+                                <div data-search-highlight="title" class="title-ellipsis ellipsis float-left">
+                                    <span class="title-text"><%= post.title %></span>
+                                </div>
+                            <% if(post.commentCount){ %>
+                                <small class="title-comments d-inline-block pl-2">(<%= post.commentCount %>)</small>
+                            <% } %>
+                            <% if(post.attachment){ %>
+                                <small class="title-attachment d-inline-block pl-2">📁</small>
+                            <% } %>
                             </a>
                         </td>
+                        <td class="views"><%= post.views %></td>
                         <td class="author">
                             <div data-search-highlight="author" class="ellipsis"><%= post.author ? post.author.username : "" %></div>
                         </td>
